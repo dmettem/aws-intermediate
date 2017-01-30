@@ -11,6 +11,17 @@ Azat Mardan @azat_co
 
 ---
 
+<http://bit.ly/aws-intermediate>
+
+---
+
+Azat
+
+* 14 books
+* Capital One Technology Fellow (modeled after IBM and Google Fellows)
+* 2 Masters: in Information Systems Technology from University of Northern Virginia (2007) and Software Engineering from Harvard (~2019, work in progress)
+
+---
 # Overview
 
 
