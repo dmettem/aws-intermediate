@@ -136,6 +136,7 @@ aws ec2 delete-key-pair --key-name {MyKeyPair}
 * `init.d` or [CloudInit](https://help.ubuntu.com/community/CloudInit) for Ubuntu+Debian and other like CentOS with additional [installation](http://stackoverflow.com/questions/23411408/how-do-i-set-up-cloud-init-on-custom-amis-in-aws-centos/23411409#23411409)
 * User Data
 * Command
+
 ---
 
 # Shell Script and User Data Example
@@ -336,12 +337,13 @@ Goal: Use CloudFormation to create [Autoscaling and load-balancing website in an
 
 ---
 
-1. Start script B with `NODE_ENV=production sh script.sh` where `script.sh` is the name of script B.
+# Lab 1 Cont.
+
 1. Test by going to the browser
-1. Create autoscaling group: CPU>10% +1
+1. Create autoscaling group: CPU>10% +1 (aws cli)
 1. Install loadtest: `npm i -g loadtest`
 1. Use loadtest to stress test your instance to see if autoscaling kicks in.
-1. Terminate the instance(s) with awscli
+1. Terminate the instance(s) with aws cli
 
 
 ---
