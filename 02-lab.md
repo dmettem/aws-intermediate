@@ -22,10 +22,10 @@ Azat Mardan @azat_co
 # Pre-Reqs
 
 * Python
-* pip
-* Node and npm
+* pip or brew or just use a bundle
+* Node and npm for HTTP server, tools and SKD code
 * AWS Account (requires email + credit/debit card)
-* Docker deamon/engine
+* Docker deamon/engine - optional
 
 ---
 
@@ -54,13 +54,19 @@ aws <command> <subcommand> [options and parameters]
 
 ---
 
-## Copy your key and secret and put into:
+## Cofigure Your CLI
+
+Copy your key and secret and put into:
 
 ```
 aws configure
 ```
 
+Set region to `us-west-1` and output to None
+
 ---
+
+# Getting Help
 
 ```
 aws help
@@ -69,6 +75,8 @@ aws ec2 describe-regions help
 ```
 
 ---
+
+# Getting Started with AWS CLI
 
 ```
 aws ec2 describe-instances help
@@ -81,13 +89,13 @@ awc ec2 create-images help
 # Launch Instance
 
 ```
-$ aws ec2 run-instances --image-id ami-xxxxxxxx --count 1 --instance-type t1.micro --key-name MyKeyPair --security-groups my-sg
+$ aws ec2 run-instances --image-id ami-xxxxxxxx --count 1 --instance-type t2.micro --key-name MyKeyPair --security-groups my-sg
 ```
 
 With subnet:
 
 ```
-$ aws ec2 run-instances --image-id ami-{xxxxxxxx} --count 1 --instance-type t1.micro --key-name {MyKeyPair} --security-group-ids sg-{xxxxxxxx} --subnet-id subnet-{xxxxxxxx}
+$ aws ec2 run-instances --image-id ami-{xxxxxxxx} --count 1 --instance-type t2.micro --key-name {MyKeyPair} --security-group-ids sg-{xxxxxxxx} --subnet-id subnet-{xxxxxxxx}
 ```
 
 ---
@@ -119,7 +127,7 @@ aws ec2 delete-key-pair --key-name {MyKeyPair}
 
 # CodeDeploy
 
-* https://aws.amazon.com/codedeploy/
+* <https://aws.amazon.com/codedeploy>
 
 ---
 
@@ -136,6 +144,23 @@ aws ec2 delete-key-pair --key-name {MyKeyPair}
 * `init.d` or [CloudInit](https://help.ubuntu.com/community/CloudInit) for Ubuntu+Debian and other like CentOS with additional [installation](http://stackoverflow.com/questions/23411408/how-do-i-set-up-cloud-init-on-custom-amis-in-aws-centos/23411409#23411409)
 * User Data
 * Command
+
+---
+
+```sh
+#!/bin/bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+. ~/.nvm/nvm.sh
+nvm install 6
+node -e "console.log('Running Node.js ' + process.version)"
+echo "require('http').createServer((req, res) => {
+  res.end('hello world')
+}).listen(3000, (error)=>{
+  console.log('server is running on 3000')
+})
+" >> index.js
+node index.js
+```
 
 ---
 
@@ -157,6 +182,7 @@ echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 ```
 
 ---
+
 
 More info on User Data:
 
@@ -210,7 +236,7 @@ aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
 
 ## EC2 Example
 
-![](images/code-samples-ec2.png)
+![inline](images/code-samples-ec2.png)
 
 ---
 
@@ -237,11 +263,15 @@ var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
 
 var params = {
    ImageId: 'ami-10fd7020', // amzn-ami-2011.09.1.x86_64-ebs
-   InstanceType: 't1.micro',
+   InstanceType: 't2.micro',
    MinCount: 1,
    MaxCount: 1
 };
+```
 
+---
+
+```js
 // Create the instance
 ec2.runInstances(params, function(err, data) {
    if (err) {

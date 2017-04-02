@@ -36,6 +36,8 @@ Azat
 
 # DATABASE: Overview of AWS Database services
 
+---
+
 ## RDS
 
 ---
@@ -88,11 +90,7 @@ RDS:
 ## Elastic Load Balancing
 
 Elastic Beanstalk:
-○ What is it?
-○ What does an instance set up?
-○ Setup a simple elastic beanstalk instance for a website ○ Dashboard
-○ Monitoring
-○ Networking
+
 ---
 
 ## VPC
