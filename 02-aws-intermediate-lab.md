@@ -17,18 +17,20 @@ Azat Mardan @azat_co
 # Overview
 
 1. DevOps and Infrastructure as code
-1. IAM
-1. Cloud Infrastructure Automation: AWS CLI, SDK and CloudFormation
-1. Automation with User Data and Images
-1. CodeDeploy and CodePipeline
-1. Working with ElasticBeanstalk
+1. Identity Access Management in AWS
+1. Working with AWS CLI
+1. Cloud Infrastructure Automation with CloudFormation
+1. Building CI/CD with GitHub, CodeDeploy and CodePipeline
 
 ---
 
 # Overview (cont.)
 
-1. Working with Docker: EC2, ECS and Elastic Beanstalk
-1. Further Topics: Connecting Resources and IAM, Extra Services and Best Practices
+1. SDK and Node SDK Example
+1. Working with ElasticBeanstalk
+1. Working with Docker: EC2, ECS and Elastic Beanstalk Containers
+1. Connecting Resources and IAM, Extra Services and Best Practices
+1. Summary and further study
 
 ---
 
@@ -131,6 +133,16 @@ Not the same as Continuous Deployment (delivery has manual prod deploy).
 * Provision environment/infrastructure: AWS CLI, CloudFormation, OpsWorks, Beanstalk
 * Configuring servers with AWS: User Data, Docker, Beanstalk, CodeDeploy
 * Configuring servers with other tools: Chef, Puppet SaltStack, Ansible
+
+---
+
+# What we need to do for CI
+
+1. Provision environment
+1. Deploy code
+1. Build
+1. Test
+1. Verify
 
 ---
 
@@ -500,6 +512,7 @@ Note: after stop you can start, after terminate no.
 ---
 
 # Working with Key Pairs
+
 ```
 aws ec2 create-key-pair --key-name {MyKeyPair} \
   --query 'KeyMaterial' --output text > {MyKeyPair}.pem
@@ -509,19 +522,6 @@ aws ec2 delete-key-pair --key-name {MyKeyPair}
 
 ---
 
-# CodeDeploy
-
-* <https://aws.amazon.com/codedeploy>
-
----
-
-# Source Code
-
-* Git
-* Rsync
-* S3, e.g., `aws s3 cp s3://{mybucket}/latest/install . --region us-east-1`
-
----
 
 # Auto Startup
 
@@ -574,7 +574,201 @@ More info on User Data:
 
 ---
 
-# SDKs
+# Deploying Code
+
+---
+
+
+---
+
+# Source Code
+
+* Git - `git push origin master` and then `git pull origin master`
+* Rsync `rsync -avzhe ssh backup.tar ec2-user@192.168.0.100:/backups/`
+* S3, e.g., `aws s3 cp s3://{mybucket}/latest/install . --region us-east-1` and then curl or wget
+
+---
+
+
+# CodeDeploy
+
+* <https://aws.amazon.com/codedeploy>
+
+---
+
+1. Create role CDInstanceRole in IAM (AmazonEC2RoleforAWSCodeDeploy)
+1. Create role CDServiceRole (AWSCodeDeployRole)
+
+Use CLI or web console
+
+
+---
+
+AmazonEC2RoleforAWSCodeDeploy Policy in JSON (for CLI)
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListObjects"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+
+---
+
+Policy for AWSCodeDeployRole in JSON (for CLI)
+
+![inline](images/codedeployrole.png)
+
+---
+
+# 2. Create an instance
+
+* Amazon Linux t2.micro
+* use CDInstanceRole in IAM role so EC2 instance
+* Install codedeploy agent in User Data (code/install-codedeploy-agent.sh)
+* Use 8Gb SSD
+* Tag with env=dev
+* Add SSH and HTTP for security group
+
+---
+
+## code/install-codedeploy-agent.sh
+
+```sh
+#!/bin/bash
+yum install -y aws-cli
+cd /home/ec2-user/
+aws s3 cp 's3://aws-codedeploy-us-east-1/latest/codedeploy-agent.noarch.rpm' . \
+  --region us-east-1
+yum -y install codedeploy-agent.noarch.rpm
+```
+
+---
+
+# Create custom CodeDeploy deployment
+
+* Use NodeApp and NodeAppInstances for app name and deployment group name
+* Use tag env=dev
+* Deployment config = All at once
+* Use Service Role ARN = CDServiceRole
+
+---
+
+# Deploy options
+
+* From S3 (using CLI)
+* From GitHub (AWS CodePipeline)
+
+---
+
+# Create CodePipeline
+
+* Enter name
+* Select GitHub as provider and select "Connect to GitHub"
+* Pick repository
+* Skip the build
+* Beta: AWS CodeDeploy, use NodeApp and NodeAppInstances
+* Create pipeline service role using wizard (or manually)
+
+---
+
+# Verifying
+
+1. Observe the code deploy in the pipeline (Source and Beta stages)
+1. Copy public URL of one of your instances and navigate to it in the browser
+1. Edit GitHub source (index.js)
+1. See changes
+
+---
+
+# Other options for CI/CD (might be complimentary to CodeDeploy)
+
+* Jenkins
+* TravisCI
+* Bamboo
+* TeamCity
+* CircleCI
+* CruiseControl
+
+---
+
+# Pipiline
+
+---
+
+# CloudFormation
+
+[Samples](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html)
+
+---
+
+# OpsWork vs CloudFormation vs Elastic Beanstalk
+
+OpsWork: configuration management (stacks and layers) - narrower app-oriented resources than CloudFormation
+
+CloudFormation: building block service for almost everything
+
+Elastic Beanstalk: only app management service
+
+---
+
+# Lab
+
+Goal: Use CloudFormation to create [Autoscaling and load-balancing website in an Amazon VPC](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/VPC_AutoScaling_and_ElasticLoadBalancer.template)
+
+---
+
+
+# Connecting Resources and IAM
+
+---
+
+# Best IAM Practices
+
+* Lock away your AWS account (root) access keys
+* Create individual IAM users
+* Use AWS-defined policies to assign permissions whenever possible
+* Use groups to assign permissions to IAM users
+* Grant least privilege
+
+---
+
+# Best IAM Practices (Cont)
+
+* Configure a strong password policy for your users
+* Enable MFA for privileged users
+* Use roles for applications that run on Amazon EC2 instances
+* Delegate by using roles instead of by sharing credentials
+
+
+---
+
+# Best IAM Practices (Cont)
+
+* Rotate credentials regularly
+* Remove unnecessary credentials
+* Use policy conditions for extra security
+* Monitor activity in your AWS account
+
+---
+
+
+# How to access and work with AWS platform from within your application?
+
+---
+
+# SDKs!
 
 ---
 
@@ -583,17 +777,17 @@ Supported
 * Amazon S3
 * Amazon EC2
 * DynamoDB
-* Many more
+* Many more!
 
 ---
 
 # Node SDK
 
 ```
-mkdir aws-test
-cd aws-test
+mkdir aws-node-sdk-test
+cd aws-node-sdk-test
 npm init -y
-npm i aws-sdk
+npm i -SE aws-sdk
 ```
 
 ---
@@ -676,62 +870,6 @@ ec2.runInstances(params, function(err, data) {
    });
 });
 ```
-
----
-
-# CloudFormation
-
-[Samples](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html)
-
----
-
-# OpsWork vs CloudFormation vs Elastic Beanstalk
-
-OpsWork: configuration management (stacks and layers) - narrower app-oriented resources than CloudFormation
-
-CloudFormation: building block service for almost everything
-
-Elastic Beanstalk: only app management service
-
----
-
-# Lab
-
-Goal: Use CloudFormation to create [Autoscaling and load-balancing website in an Amazon VPC](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/VPC_AutoScaling_and_ElasticLoadBalancer.template)
-
----
-
-
-# Connecting Resources and IAM
-
----
-
-# Best IAM Practices
-
-* Lock away your AWS account (root) access keys
-* Create individual IAM users
-* Use AWS-defined policies to assign permissions whenever possible
-* Use groups to assign permissions to IAM users
-* Grant least privilege
-
----
-
-# Best IAM Practices (Cont)
-
-* Configure a strong password policy for your users
-* Enable MFA for privileged users
-* Use roles for applications that run on Amazon EC2 instances
-* Delegate by using roles instead of by sharing credentials
-
-
----
-
-# Best IAM Practices (Cont)
-
-* Rotate credentials regularly
-* Remove unnecessary credentials
-* Use policy conditions for extra security
-* Monitor activity in your AWS account
 
 ---
 
