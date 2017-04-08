@@ -88,30 +88,31 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 ---
 
-# Module 2: Cloud Infrastructure Automation with CloudFormation
+# Module 2: AWS SDKs
+
+* Advantages of AWS SDKs
+* Node SDK Example
+* Lab 2: Write a Node script to create an instance and run it
+
+---
+
+# Module 3: Cloud Infrastructure Automation with CloudFormation
 
 * CloudFormation advantage
 * CloudFormation structure
 * Demo: CloudFormation example and AWS CLI
 * Demo: CloudFormation visual web editor
-* Lab 2: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+* Lab 3: Create a ELB and auto scaling environment from CloudFormation template/blueprint
 
 ---
 
-# Module 3: Building CI/CD
+# Module 4: Building CI/CD
 
 * CodeDeploy with S3 and GitHub
 * CodeDeploy and CodePipeline
 * Demo: Building CI with GitHub
-* Lab 3: Build CI with CodeDeploy
+* Lab 4: Build CI with CodeDeploy
 
----
-
-# Module 4: AWS SDKs
-
-* Advantages of AWS SDKs
-* Node SDK Example
-* Lab 4: Write a Node script to create an instance and run it
 
 ---
 
@@ -146,7 +147,7 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 ---
 
-# Module 7:
+# Module 7: Serverless
 
 * Serverless with AWS Lambda
 * AWS SNS and SQS: Simple Queuing service

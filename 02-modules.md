@@ -1010,7 +1010,117 @@ aws cloudformation create-stack --stack-name myteststack \
 
 ---
 
+WordPress CloudFormation Parameters Example
+
+```
+"Parameters": {
+  "KeyName": {
+    "Description" : "Name of an existing EC2 KeyPair to enable SSH access into the WordPress web server",
+    "Type": "AWS::EC2::KeyPair::KeyName"
+  },
+  "WordPressUser": {
+    "Default": "admin",
+    "NoEcho": "true",
+    "Description" : "The WordPress database admin account user name",
+    "Type": "String",
+    "MinLength": "1",
+    "MaxLength": "16",
+    "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*"
+  },
+  "WebServerPort": {
+    "Default": "8888",
+    "Description" : "TCP/IP port for the WordPress web server",
+    "Type": "Number",
+    "MinValue": "1",
+    "MaxValue": "65535"
+  }
+}
+```
+
+---
+
+# Pseudo Parameters
+
+Resolved by CloudFormation, e.g., AWS::Region
+
+
+---
+
+# Other functions
+
+* Fn::FindInMap
+* Fn::Base64
+* Conditional: Fn::And, Fn::Equals, Fn::If, Fn::Not, Fn::Or
+
+See the full list in [Intrinsic Function Reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html).
+
+---
+
+# Mappings
+
+---
+
+# What and why Mappings
+
+Mappings is for specifying conditional values
+
+Simple Parameters -> Mappings -> Complex Values
+
+Example: Getting AMI ID (differs from region to region for the same image)
+
+---
+
+Mappings example: define mappings for AMI IDs based on regions:
+
+```
+  "Mappings" : {
+    "RegionMap" : {
+      "us-east-1" : {
+          "AMI" : "ami-76f0061f"
+      },
+      "us-west-1" : {
+          "AMI" : "ami-655a0a20"
+      },
+      "eu-west-1" : {
+          "AMI" : "ami-7fd4e10b"
+      },
+      "ap-southeast-1" : {
+          "AMI" : "ami-72621c20"
+      },
+      "ap-northeast-1" : {
+          "AMI" : "ami-8e08a38f"
+      }
+    }
+  },
+```
+
+---
+
+Find AMI ID based on region using mappings:
+
+```
+"Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "KeyName" : { "Ref" : "KeyName" },
+        "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
+        "UserData" : { "Fn::Base64" : "80" }
+      }
+    }
+  }
+}
+```
+
+---
+
 # Demo: CloudFormation example and AWS CLI
+
+* Create EC2 using CloudFormation and User Data
+
+```
+aws create-stack ... TK
+```
 
 ---
 
@@ -1018,15 +1128,26 @@ aws cloudformation create-stack --stack-name myteststack \
 
 ---
 
-# Lab 2: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+# ❓ Questions? ❓
 
 ---
 
 
+# Lab 3: Everything is easier with CloudFormation
+
+Task: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+
+[Link to file](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/AutoScalingMultiAZWithNotifications.template) and to [designer](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15b9)
+
+Time to finish: 20min
 
 ---
 
-# Module 3: Building CI/CD
+# ❓ Questions? ❓
+
+---
+
+# Module 4: Building CI/CD
 
 ---
 
