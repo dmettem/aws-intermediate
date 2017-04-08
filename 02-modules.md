@@ -248,6 +248,10 @@ Time: 15 minutes to download and install, go! 🚀
 
 ---
 
+# ❓ Questions? ❓
+
+---
+
 # AWS CLI
 
 ---
@@ -264,7 +268,29 @@ Time: 15 minutes to download and install, go! 🚀
 * Fast: no need to click around in the web console
 * Can be run from any machine: Will work for CI/CD
 
+
 ---
+
+# Note
+
+`\` in a CLI command means a new line - optional and purely for formatting and larger font. `\` works the sames in bash/zsh.
+
+
+Bad font:
+
+```
+aws ec2 describe-images --owners amazon --filters "Name=virtualization-type,Values=hvm" "Name=root-device-type,Values=ebs" "Name=name,Values=amzn-ami-hvm-2016.09.1.20170119-x86_64-gp2"
+```
+
+Good font:
+
+```
+aws ec2 describe-images --owners amazon \
+  --filters "Name=virtualization-type,Values=hvm" "Name=root-device-type,Values=ebs" \
+  "Name=name,Values=amzn-ami-hvm-2016.09.1.20170119-x86_64-gp2"
+```
+
+^Both commands will work the same
 
 
 ---
@@ -337,6 +363,10 @@ aws help
 aws ec2 help
 aws ec2 describe-regions help
 ```
+
+---
+
+# Identity Access Management in AWS
 
 ---
 
@@ -424,6 +454,43 @@ aws iam create-access-key --user-name MyUser
 }
 ```
 
+
+
+# Connecting Resources and IAM
+
+---
+
+# Best IAM Practices
+
+* Lock away your AWS account (root) access keys
+* Create individual IAM users
+* Use AWS-defined policies to assign permissions whenever possible
+* Use groups to assign permissions to IAM users
+* Grant least privilege
+
+---
+
+# Best IAM Practices (Cont)
+
+* Configure a strong password policy for your users
+* Enable MFA for privileged users
+* Use roles for applications that run on Amazon EC2 instances
+* Delegate by using roles instead of by sharing credentials
+
+
+---
+
+# Best IAM Practices (Cont)
+
+* Rotate credentials regularly
+* Remove unnecessary credentials
+* Use policy conditions for extra security
+* Monitor activity in your AWS account
+
+---
+
+# Working with AWS CLI
+
 ---
 
 # Getting Started with AWS CLI
@@ -506,7 +573,7 @@ Example of Amazon Linux AMI 2016.09.1 (HVM), SSD Volume Type Output:
 # Run instances is really launch instances (or create)
 
 ```
-$ aws ec2 run-instances --image-id ami-xxxxxxxx \
+aws ec2 run-instances --image-id ami-xxxxxxxx \
   --count 1 --instance-type t2.micro \
   --key-name MyKeyPair --security-groups my-sg
 ```
@@ -519,7 +586,7 @@ Note: Need to have security group first (if you don't have it).
 # Run (Launch) instances with subnet:
 
 ```
-$ aws ec2 run-instances --image-id ami-{xxxxxxxx} \
+aws ec2 run-instances --image-id ami-{xxxxxxxx} \
   --count 1 --instance-type t2.micro \
   --key-name {MyKeyPair} \
   --security-group-ids sg-{xxxxxxxx} --subnet-id subnet-{xxxxxxxx}
@@ -543,6 +610,7 @@ aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --por
 ```
 
 Add SSH port 22:
+
 ```
 aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 22 --cidr 203.0.113.0/24
 ```
@@ -576,6 +644,8 @@ Replace {xxx}, {Name} and {MyInstance}
 
 ---
 
+# See instances
+
 ```
 aws ec2 describe-instances
 ```
@@ -603,6 +673,8 @@ aws ec2 describe-key-pairs --key-name {MyKeyPair}
 aws ec2 delete-key-pair --key-name {MyKeyPair}
 ```
 
+`{MyKeyPair}` is a string name, e.g., `azat-aws-dev`.
+
 ---
 
 
@@ -611,6 +683,8 @@ aws ec2 delete-key-pair --key-name {MyKeyPair}
 * `init.d` or [CloudInit](https://help.ubuntu.com/community/CloudInit) for Ubuntu+Debian and other like CentOS with additional [installation](http://stackoverflow.com/questions/23411408/how-do-i-set-up-cloud-init-on-custom-amis-in-aws-centos/23411409#23411409)
 * User Data
 * Command
+
+Note: More on User Data is in [the AWS Intro course](https://github.com/azat-co/aws-intro)
 
 ---
 
@@ -633,6 +707,8 @@ node index.js
 
 # Shell Script and User Data Example
 
+LAMP Stack (Apache httpd, MySQL and PHP) for Amazon Linux:
+
 ```sh
 #!/bin/bash
 yum update -y
@@ -650,6 +726,21 @@ echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 
 ---
 
+# User Data in run-instances
+
+You can supply base64 encoded string, normal string or a file. ami-9e247efe is Amazon Linux AMI for us-west-1:
+
+```bash
+aws ec2 run-instances --image-id ami-9e247efe \
+  --count 1 --instance-type t2.micro \
+  --key-name MyKeyPair \
+  --security-groups MySecurityGroup  \
+  --user-data file://my_script.txt
+```
+
+Note: You can only run user-data once on launch (run-instances). Updating user data on existing instance will NOT run the User Data script.
+
+---
 
 More info on User Data:
 
@@ -657,25 +748,348 @@ More info on User Data:
 
 ---
 
-# Deploying Code
+# Declarative vs. Imperative
+
+TL;DR: Declarative - what I want and imperative - what to do.
+
+Declarative requires that users specify the end state of the infrastructure they want, while imperative configures systems in a series of actions.
+
+(AWS CLI and SDK are imperative.)
 
 ---
 
+# Problems with imperative style?
+
+* Not simple and not simple to understand the end result
+* Racing conditions
+* Unpredictable results
+
+^Imperative could be more flexible with dynamic if/else conditions while declarative wold just break.
+
+---
+
+# Meet CloudFormation!
+
+---
+
+# What is CloudFormation
+
+* Special format in a JSON or YAML file
+* Declarative service
+* Visual web editor
+
+[Samples](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html)
+
+---
+
+# CloudFormation advantages
+
+* Declarative and Flexible
+* Easy to Use
+* Infrastructure as Code :zero::one::zero::one:
+* Supports a Wide Range of AWS Resources
+* Customized via Parameters
+* Visualize and Edit with Drag-and-Drop Interface
+* Integration Ready
+
+---
+
+# CloudFormation Example: S3 Bucket
+
+```json
+{
+    "Resources" : {
+        "HelloBucket" : {
+            "Type" : "AWS::S3::Bucket"
+        }
+    }
+}
+```
+
+---
+
+# YAML
+
+```
+Resources:
+  HelloBucket:
+    Type: AWS::S3::Bucket
+```
+
+---
+
+# Where to put JSON or YAML?
+
+* CLI
+* Web console
+* SDK
+* REST API calls
+
+---
+
+# AWS CLI create-stack
+
+```
+aws cloudformation create-stack --stack-name myteststack --template-body file:////home//local//test//sampletemplate.json
+```
+
+It will give you stack ID which you can use later to check on the status of creation.
+
+
+---
+
+# CloudFormation structure
+
+* Version
+* Description
+* Resources
+* Parameters
+* Mappings
+* Outputs
+
+---
+
+# AWS CloudFormation Resources
+
+* Resource must have a type of this format `AWS::ProductIdentifier::ResourceType`. See [all resource types](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html).
+* Some resources like S3 have defaults but others like EC2 will require more properties (image ID)
+* You can get real property value with Ref function (ID, IP, etc.)
+
+---
+
+
+## Remember from a lab to host a static webpage on S3 in the AWS Intro course?
+
+---
+
+CloudFormation Example: S3 Bucket with Static Website
+
+```json
+{
+    "Resources" : {
+        "HelloBucket" : {
+            "Type" : "AWS::S3::Bucket",
+            "Properties" : {
+               "AccessControl" : "PublicRead",
+               "WebsiteConfiguration" : {
+                    "IndexDocument" : "index.html",
+                    "ErrorDocument" : "error.html"            
+               }               
+            }
+        }
+    }
+}
+```
+
+---
+
+## Let's use ref function. See list of [ref functions](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-ref.html).
+
+---
+
+# EC2 with a security group
+
+---
+
+```json
+{
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
+        "KeyName" : "mykey",
+        "ImageId" : "ami-9e247efe"
+      }
+    },
+    "InstanceSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable SSH access via port 22",
+        "SecurityGroupIngress" : [ {
+          "IpProtocol" : "tcp",
+          "FromPort" : "22",
+          "ToPort" : "22",
+          "CidrIp" : "0.0.0.0/0"
+        } ]
+      }
+    }
+  }
+}
+```
+
+---
+
+## For other attributes not returned by ref, there's Fn::GetAtt
+
+```
+{ "Fn::GetAtt" : [ "logicalNameOfResource", "attributeName" ] }
+```
+
+See [reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-getatt.html).
+
+
+---
+
+## mykey must exists... can we provide it later? Yes, it's a template!
+
+```
+"Resources" : {
+  "Ec2Instance" : {
+    "Type" : "AWS::EC2::Instance",
+    "Properties" : {
+      "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
+      "KeyName" : "mykey",
+      "ImageId" : "ami-9e247efe"
+    }
+  },
+```
+
+
+---
+
+## Key parameter (key is provided on stack creation)
+
+```
+{
+  "Parameters" : {
+    "KeyName" : {
+      "Description" : "The EC2 Key Pair to allow SSH access to the instance",
+      "Type" : "AWS::EC2::KeyPair::KeyName"
+    }
+  },
+```
+
+---
+
+## Resource EC2 (created with the key by CloudFormation)
+
+```
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" }, "MyExistingSecurityGroup" ],
+        "KeyName" : { "Ref" : "KeyName"},
+        "ImageId" : "ami-7a11e213"
+      }
+    },
+```
+
+---
+
+## Resource SecurityGroup (create by CloudFormation)
+
+```
+    "InstanceSecurityGroup" : {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupDescription" : "Enable SSH access via port 22",
+        "SecurityGroupIngress" : [ {
+          "IpProtocol" : "tcp",
+          "FromPort" : "22",
+          "ToPort" : "22",
+          "CidrIp" : "0.0.0.0/0"
+        } ]
+      }
+    }
+  }
+}
+```
+
+---
+
+# Providing parameters in CLI
+
+```
+aws cloudformation create-stack --stack-name myteststack \
+  --template-body file:////home//local//test//sampletemplate.json \
+  --parameters ParameterKey=KeyPairName,ParameterValue=TestKey \
+  ParameterKey=SubnetIDs,ParameterValue=SubnetID1\\,SubnetID2
+```
+
+---
+
+# Demo: CloudFormation example and AWS CLI
+
+---
+
+# Demo: CloudFormation visual web editor
+
+---
+
+# Lab 2: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+
+---
+
+
+
+---
+
+# Module 3: Building CI/CD
+
+---
+
+# How to get the source code to the remote machines?
+
+Any ideas? Just say out loud.
 
 ---
 
 # Source Code
 
+* SSH, scp, sftp
 * Git - `git push origin master` and then `git pull origin master`
 * Rsync `rsync -avzhe ssh backup.tar ec2-user@192.168.0.100:/backups/`
 * S3, e.g., `aws s3 cp s3://{mybucket}/latest/install . --region us-east-1` and then curl or wget
 
 ---
 
+# Simple Flow
 
-# CodeDeploy
+1. Code committed to bucket, repository, folder, etc.
+1. Event is issued (eg., a webhook)
+1. Code is deployed
 
-* <https://aws.amazon.com/codedeploy>
+---
+
+## Developers can implement their own solution or use one of the open source... but AWS has a service... meet [CodeDeploy](https://aws.amazon.com/codedeploy)!
+
+---
+
+![](https://www.youtube.com/watch?time_continue=3&v=Wx-ain8UryM)
+
+
+---
+
+# CodeDeploy Benefits
+
+* Automated Deployments
+* Minimize Downtime
+* Centralized Control
+* Easy To Adopt
+
+---
+
+# CodePipeline
+
+AWS CodePipeline is a CI/CD service. Its benefits:
+
+* Rapid Delivery
+* Improved Quality
+* Configurable Workflow
+* Get Started Fast
+* Easy to Integrate
+
+---
+
+How CodePipeline, CodeDeploy and other CI/CD services can work together
+
+![inline](images/codepipeline diagram.png)
+
+---
+
+# Demo: Building CI with GitHub
 
 ---
 
@@ -705,7 +1119,6 @@ AmazonEC2RoleforAWSCodeDeploy Policy in JSON (for CLI)
   ]
 }
 ```
-
 
 ---
 
@@ -786,15 +1199,22 @@ yum -y install codedeploy-agent.noarch.rpm
 
 ---
 
-# Pipiline
+# ❓ Questions? ❓
 
 ---
 
-# CloudFormation
+# Lab 3: Never deploy (manually) again!
 
-[Samples](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html)
+Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
+
+Time to finish: 20 min
 
 ---
+
+# ❓ Questions? ❓
+
+---
+
 
 # OpsWork vs CloudFormation vs Elastic Beanstalk
 
@@ -812,39 +1232,6 @@ Goal: Use CloudFormation to create [Autoscaling and load-balancing website in an
 
 ---
 
-
-# Connecting Resources and IAM
-
----
-
-# Best IAM Practices
-
-* Lock away your AWS account (root) access keys
-* Create individual IAM users
-* Use AWS-defined policies to assign permissions whenever possible
-* Use groups to assign permissions to IAM users
-* Grant least privilege
-
----
-
-# Best IAM Practices (Cont)
-
-* Configure a strong password policy for your users
-* Enable MFA for privileged users
-* Use roles for applications that run on Amazon EC2 instances
-* Delegate by using roles instead of by sharing credentials
-
-
----
-
-# Best IAM Practices (Cont)
-
-* Rotate credentials regularly
-* Remove unnecessary credentials
-* Use policy conditions for extra security
-* Monitor activity in your AWS account
-
----
 
 
 # How to access and work with AWS platform from within your application?

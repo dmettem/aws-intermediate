@@ -23,14 +23,15 @@ Azat Mardan @azat_co
 
 ## Further Study
 
-* https://aws.amazon.com/new/reinvent/
-* https://aws.amazon.com/summits/
-* https://aws.amazon.com/certification/
+* [AWS Quick Starts: Automated gold-standard deployments on AWS](https://aws.amazon.com/quickstart)
+* https://aws.amazon.com/new/reinvent
+* https://aws.amazon.com/summits
+* https://aws.amazon.com/certification
 
 ---
 
 ## Further Study (cont)
 
 * https://www.manning.com/books/amazon-web-services-in-action
-* https://cloudacademy.com/
+* https://cloudacademy.com
 * https://node.university
