@@ -1,9 +1,10 @@
 footer: © NodeProgram.com, Node.University and Azat Mardan 2017
 slidenumbers: true
 theme: Merriweather, 8
+build-lists: true
 
 # AWS Intermediate
-## Lab
+## All you need to know to start DevOps with AWS
 
 ![inline 100%](images/azat.jpeg)
 Azat Mardan @azat_co
@@ -14,54 +15,14 @@ Azat Mardan @azat_co
 
 ---
 
-# Overview
+## Why cloud?
 
-1. DevOps and Infrastructure as code
-1. Identity Access Management in AWS
-1. Working with AWS CLI
-1. Cloud Infrastructure Automation with CloudFormation
-1. Building CI/CD with GitHub, CodeDeploy and CodePipeline
+Refresher from the AWS Intro course. Yell out loud the of cloud computing benefits! 🔊
 
----
-
-# Overview (cont.)
-
-1. SDK and Node SDK Example
-1. Working with ElasticBeanstalk
-1. Working with Docker: EC2, ECS and Elastic Beanstalk Containers
-1. Connecting Resources and IAM, Extra Services and Best Practices
-1. Summary and further study
 
 ---
 
 ## We have a few pre-requisites—tools you need to install before we can proceed. But where to install?
-
-
----
-
-# Install Pre-Reqs Here:
-
-* Host - your dev machine (recommended for Mac and Linux)
-* Virtual machine - if you develop in VM (recommended for Windows)
-* Remote machine - if you develop in the cloud or if you are setting up CD/CI environment
-
----
-
-# Pre-Reqs
-
-* AWS Account (requires email + credit/debit card)
-* Python 2.7 or 3.x (latest is better)
-* [AWS CLI](https://aws.amazon.com/cli): Install with [pip](https://pypi.python.org/pypi/pip) or brew or just use a [bundle](http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html) (see all [options](http://docs.aws.amazon.com/cli/latest/userguide/installing.html))
-* Node and npm for HTTP server, tools and SKD code ([installers](https://nodejs.org/en/download))
-* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
-
----
-
-Good to have tools
-
-* [Git](https://git-scm.com) mostly for code deploys and Elastic Beanstalk
-* Code editor [Atom](https://atom.io) or [VS code](https://code.visualstudio.com)
-* [CURL](https://curl.haxx.se/download.html) and [PuTTY](http://www.putty.org) (for Windows)
 
 ---
 
@@ -77,6 +38,7 @@ Good to have tools
 * Bridge gap between IT Ops and devs - work as one team
 
 ---
+
 
 # Main Principles
 
@@ -146,6 +108,146 @@ Not the same as Continuous Deployment (delivery has manual prod deploy).
 
 ---
 
+
+# Billing and calculator
+
+* [SIMPLE MONTHLY CALCULATOR](https://calculator.s3.amazonaws.com/index.html)
+* [Amazon EC2 Pricing](https://aws.amazon.com/ec2/pricing/on-demand)
+* [Amazon S3 Pricing](https://aws.amazon.com/s3/pricing)
+
+
+---
+
+# Billing Management console
+
+![inline](images/billing-console.png)
+
+---
+
+# What you need or lab 0
+
+---
+
+## Slides&code
+
+Repo: <https://github.com/azat-co/aws-intermediate>
+
+Git clone (you can fork first too):
+
+```
+git clone https://github.com/azat-co/aws-intermediate.git
+```
+
+Download with CURL and unzip (create a new folder):
+
+```
+curl  https://codeload.github.com/azat-co/aws-intermediate/zip/master | tar -xv
+```
+
+---
+
+# Who has AWS account access? 🙋
+
+---
+
+## AWS account: Free tier
+
+* Sign up for free tier with an email you have access to
+* Random verification (phone call or wait - ask me for access to my account)
+* Debit/credit Card for verification and paid services
+
+
+---
+
+## AWS account: Free tier (cont)
+
+Free tier: <https://aws.amazon.com/free>, examples:
+
+* EC2: 750 hours of t2.micro (~1 month of 1 EC2) - more than enough for this class and then some more
+* S3: 5Gb
+* RDS: 750 hours
+* Lambda: 1,000,000 requests/mo
+* More products!
+
+---
+
+# Install Pre-Reqs Here:
+
+* Host - your dev machine (recommended for Mac and Linux)
+* Virtual machine - if you develop in VM (recommended for Windows)
+* Remote machine - if you develop in the cloud or if you are setting up CD/CI environment
+
+I develop natively on my dev machine, but you can use another EC2 instance
+
+---
+
+# Pre-Reqs
+
+* AWS Account (requires email + credit/debit card)
+* Python 2.7 or 3.x (latest is better)
+* [AWS CLI](https://aws.amazon.com/cli): Install with [pip](https://pypi.python.org/pypi/pip) or brew or just use a [bundle](http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html) (see all [options](http://docs.aws.amazon.com/cli/latest/userguide/installing.html))
+* Node and npm for HTTP server, tools and SKD code ([installers](https://nodejs.org/en/download))
+* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
+
+---
+
+# Good to have tools
+
+* [Git](https://git-scm.com) mostly for code deploys and Elastic Beanstalk
+* Code editor [Atom](https://atom.io) or [VS code](https://code.visualstudio.com)
+* [CURL](https://curl.haxx.se/download.html) and [PuTTY](http://www.putty.org) (for Windows)
+
+---
+
+# AWS CLI Check
+
+```
+aws --version
+```
+
+v1.x - ok
+
+---
+
+# Node and npm Check
+
+```
+node --version
+npm --version
+```
+
+6.x - ok and 3.x - ok
+
+---
+
+# Docker Check
+
+```
+docker --version
+```
+
+1.x - ok and 3.x - ok
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# Lab 0: Installs or Flight Checklist
+
+* Slides, labs and code  <https://github.com/azat-co/aws-intro>
+* AWS account
+* AWS CLI, (pip/brew/bundle)
+* Node and npm
+* Docker engine
+
+Detailed instructions and link are in labs/0-installs.md
+
+Time: 15 minutes to download and install, go! 🚀
+
+---
+
 # AWS CLI
 
 ---
@@ -164,25 +266,6 @@ Not the same as Continuous Deployment (delivery has manual prod deploy).
 
 ---
 
-## AWS CLI Installation
-
-```
-phyton --version
-pip --version
-pip install awscli
-```
-
-At least 2.6.5 or 3.x (recommended)
-
-<http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html>
-
-
----
-
-## Other AWS CLI Installations
-
-* [Install the AWS CLI with Homebrew](http://docs.aws.amazon.com/cli/latest/userguide/cli-install-macos.html#awscli-install-osx-homebrew) - for macOS
-* [Install the AWS CLI Using the Bundled Installer (Linux, macOS, or Unix)](http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html) - just download, unzip and execute
 
 ---
 
