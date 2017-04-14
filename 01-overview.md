@@ -22,6 +22,10 @@ Azat Mardan @azat_co
 
 ---
 
+![fit](images/azats-books-covers.png)
+
+---
+
 # Meet Your Instructor (cont)
 
 * Master of Science in Information Systems Technology from University of Northern Virginia (2007)
@@ -118,41 +122,25 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 # Module 5: AWS Databases
 
-* RDS:  
-  * Aurora
-  * PostgeSQL
-  * MySQL
-  * MariaDB
-  * Oracle
-  * MS SQL Server
-
----
-
-# Module 5: AWS Databases (cont)
-
+* RDS
 * DynamoDB
 * Creating a database instance
 * IAM Role
-* Demo: Connecting to the database from EC2 and Node app
-* Lab 5: Launch an EC2 and RDS instances and connect from Node code of EC2 to RDS
 
 ---
 
-# Module 6: PaaS and Beyond
+# Module 6: PaaS and Containers
 
 * Working with ElasticBeanstalk
 * Working with Docker: EC2, ECS and Elastic Beanstalk Containers
-* Demo: Create registry, push image, deploy it
-* Lab 6: Deploy a Node app using Docker
 
 ---
 
 # Module 7: Serverless
 
 * Serverless with AWS Lambda
-* AWS SNS and SQS: Simple Queuing service
 * Demo: Building Microservice with Lambda and API Gateway
-* Lab 7: Create a microservice to save data in DB
+* Lab 5: Create a lambda CRUD microservice to save data in DB
 
 ---
 
@@ -163,63 +151,3 @@ Multitasking does NOT work (for work which requires focus)[^1]
 * AWS Certifications
 * AWS Books
 * AWS Courses
-
----
-
-TK
-
-Networking
-
-Overview of AWS Network Services
-
-● VPC
-
-● AWS Direct Connect
-
-● Elastic Load Balancing
-
-● Amazon Route 53
-
-VPC (Virtual Private Cloud):
-
-○ What is it?
-
-○ Keeping your servers together in the same network
-
-○ Setting them up
-
-○ Allowing access from the local network
-
-○ Application Services
-
-Overview of AWS Application services
-
-● API Gateway
-
-● AppStream
-
-● CloudSearch
-
-● Elastic Transcoder
-
-● SES
-
-● SNS
-
-● SQS
-
-● SWF
-
-SQS (Simple Queuing service):
-
-○ What is it?
-
-○ Features
-
-○ Competitors
-
-○ Set up
-
-○ Connecting with local programs
-
-○ Dashboard/Monitoring

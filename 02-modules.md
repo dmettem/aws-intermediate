@@ -19,10 +19,72 @@ Azat Mardan @azat_co
 
 Refresher from the AWS Intro course. Yell out loud the of cloud computing benefits! 🔊
 
+---
+
+[.autoscale: true]
+
+* Elastic, scalable, flexible and operational agile
+* Disaster recovery
+* Automatic software updates
+* Capital-expenditure Free
+* Increased collaboration
+* Work from anywhere
+* Standard and expertise
+* Reduced time to market and competitiveness
+* Environmentally friendly
+* Easy to use
+* Benefits of mass economy of scale
+* Global delivery faster
 
 ---
 
-## We have a few pre-requisites—tools you need to install before we can proceed. But where to install?
+# Major Cloud Providers
+
+* Azure
+* Google
+* AWS
+
+---
+
+
+# Types of Cloud Computing
+
+* IaaS
+* PaaS
+* BaaS
+* FaaS
+* SaaS
+
+---
+
+# AWS Benefits
+
+* One of the first
+* Massive scale
+* Innovator with news features and services
+* Lots of tools - good dev experience
+* Almost a standard with lots of expertise, best practices, experts, books, etc.
+
+---
+
+# Best Practices
+
+[.autoscale: true]
+
+* Horizontal and vertical scaling
+* Redundancy
+* Not just EC2- services instead of servers
+* Loose coupling
+* Stateless
+* Automation
+* Cost optimization
+* Caching
+
+^: User Data, CloudFormation; Spot, event driven, alerts and auto scaling groups; CloudFront, app caching
+
+---
+
+# An example of an environment in AWS
 
 ---
 
@@ -171,6 +233,11 @@ Free tier: <https://aws.amazon.com/free>, examples:
 
 ---
 
+
+## We have a few pre-requisites—tools you need to install before we can proceed. But where to install?
+
+---
+
 # Install Pre-Reqs Here:
 
 * Host - your dev machine (recommended for Mac and Linux)
@@ -187,7 +254,7 @@ I develop natively on my dev machine, but you can use another EC2 instance
 * Python 2.7 or 3.x (latest is better)
 * [AWS CLI](https://aws.amazon.com/cli): Install with [pip](https://pypi.python.org/pypi/pip) or brew or just use a [bundle](http://docs.aws.amazon.com/cli/latest/userguide/awscli-install-bundle.html) (see all [options](http://docs.aws.amazon.com/cli/latest/userguide/installing.html))
 * Node and npm for HTTP server, tools and SKD code ([installers](https://nodejs.org/en/download))
-* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
+
 
 ---
 
@@ -196,6 +263,7 @@ I develop natively on my dev machine, but you can use another EC2 instance
 * [Git](https://git-scm.com) mostly for code deploys and Elastic Beanstalk
 * Code editor [Atom](https://atom.io) or [VS code](https://code.visualstudio.com)
 * [CURL](https://curl.haxx.se/download.html) and [PuTTY](http://www.putty.org) (for Windows)
+* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
 
 ---
 
@@ -221,6 +289,8 @@ npm --version
 ---
 
 # Docker Check
+
+Optional
 
 ```
 docker --version
@@ -454,6 +524,7 @@ aws iam create-access-key --user-name MyUser
 }
 ```
 
+---
 
 
 # Connecting Resources and IAM
@@ -599,20 +670,33 @@ Note: Need to have security group and subnet first (if you don't have them).
 
 # Working with Security Groups Example
 
+Create security group:
+
 ```
-aws ec2 create-security-group --group-name MySecurityGroup --description "My security group"
+aws ec2 create-security-group \
+  --group-name MySecurityGroup \
+  --description "My security group"
 ```
 
 Add RDP port 3389:
 
 ```
-aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 3389 --cidr 203.0.113.0/24
+aws ec2 authorize-security-group-ingress \
+  --group-name my-sg --protocol tcp \
+  --port 3389 --cidr 203.0.113.0/24
 ```
+
+---
+
+# Working with Security Groups Example (cont)
+
 
 Add SSH port 22:
 
 ```
-aws ec2 authorize-security-group-ingress --group-name my-sg --protocol tcp --port 22 --cidr 203.0.113.0/24
+aws ec2 authorize-security-group-ingress \
+  --group-name my-sg --protocol tcp \
+  --port 22 --cidr 203.0.113.0/24
 ```
 
 Verify security group:
@@ -626,8 +710,10 @@ aws ec2 describe-security-groups --group-names my-sg
 ## Security Group Open Everything Example
 
 ```
-aws ec2 create-security-group --group-name open-sg --description "Open security group"
-aws ec2 authorize-security-group-ingress --group-name open-sg --protocol all --port 0-65535 --cidr 0.0.0.0/0
+aws ec2 create-security-group --group-name \
+  open-sg --description "Open security group"
+aws ec2 authorize-security-group-ingress \
+  --group-name open-sg --protocol all --port 0-65535 --cidr 0.0.0.0/0
 aws ec2 describe-security-groups --group-names open-sg
 ```
 
@@ -726,6 +812,14 @@ echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
 
 ---
 
+# HTML Hello world
+
+```
+echo "<?php echo 'Hello World!' ?>" > /var/www/index.php
+```
+
+---
+
 # User Data in run-instances
 
 You can supply base64 encoded string, normal string or a file. ami-9e247efe is Amazon Linux AMI for us-west-1:
@@ -745,6 +839,196 @@ Note: You can only run user-data once on launch (run-instances). Updating user d
 More info on User Data:
 
 <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html>
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# Lab 1: Power to AWS CLI
+
+Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, make the HTML page (hello world) visible in the browser *publicly*
+
+Time to finish: 20 min
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# Module 2: AWS SDKs
+
+---
+
+# How to access and work with AWS platform from within your application?
+
+---
+
+# SDKs!
+
+
+---
+
+# Advantages of SDKs
+
+* Automate anything
+* Build your own clients or interfaces for AWS
+* No need to create HTTP requests and worry about payloads, formats, headers
+* Work in your favorite environment: Java, Python, Node and many more
+
+---
+
+# Supported services
+
+* Amazon S3
+* Amazon EC2
+* DynamoDB
+* Many more!
+
+---
+
+[.autoscale:true]
+
+# What languages
+
+* Android
+* Browser
+* iOS
+* Java
+* .NET
+* Node.js
+* PHP
+* Python
+* Ruby
+* Go
+
+
+---
+
+# Node SDK
+
+```
+mkdir aws-node-sdk-test
+cd aws-node-sdk-test
+npm init -y
+npm i -SE aws-sdk
+```
+
+---
+
+# Credentials
+
+* Home directory
+* Environment variables
+* JavaScript/Node or JSON file
+
+---
+
+# Credentials in Home Directory
+
+ `~/.aws/credentials` or `C:\Users\USER_NAME\.aws\credentials` for Windows users
+
+```
+[default]
+aws_access_key_id = YOUR_ACCESS_KEY_ID
+aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
+```
+
+---
+
+## EC2 Example
+
+![inline](images/code-samples-ec2.png)
+
+---
+
+Create and open `create-ec2.js`:
+
+```js
+// Load the SDK for JavaScript
+var AWS = require('aws-sdk');
+
+// Load credentials and set region from JSON file
+AWS.config.loadFromPath('./config.json');
+```
+
+---
+
+```js
+// Load the AWS SDK for Node.js
+var AWS = require('aws-sdk');
+// Load credentials and set region from JSON file
+AWS.config.loadFromPath('./config.json');
+
+// Create EC2 service object
+var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
+
+var params = {
+   ImageId: 'ami-10fd7020', // amzn-ami-2011.09.1.x86_64-ebs
+   InstanceType: 't2.micro',
+   MinCount: 1,
+   MaxCount: 1
+};
+```
+
+---
+
+```js
+// Create the instance
+ec2.runInstances(params, function(err, data) {
+   if (err) {
+      console.log("Could not create instance", err);
+      return;
+   }
+   var instanceId = data.Instances[0].InstanceId;
+   console.log("Created instance", instanceId);
+   // Add tags to the instance
+   params = {Resources: [instanceId], Tags: [
+      {
+         Key: 'Name',
+         Value: 'SDK Sample'
+      }
+   ]};
+   ec2.createTags(params, function(err) {
+      console.log("Tagging instance", err ? "failure" : "success");
+   });
+});
+```
+
+
+---
+
+# Running Node scripts
+
+```
+node filename.js
+```
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+
+# Lab 2: Node SDK Runs EC2
+
+Task: Write a Node script to create an instance and run it
+
+Time to finish: 10 min
+
+
+---
+
+# ❓ Questions? ❓
+
+
+---
+
+
+# Module 3: Cloud Infrastructure Automation with CloudFormation
 
 ---
 
@@ -1137,7 +1421,7 @@ aws create-stack ... TK
 
 Task: Create a ELB and auto scaling environment from CloudFormation template/blueprint
 
-[Link to file](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/AutoScalingMultiAZWithNotifications.template) and to [designer](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15b9)
+code/AutoScalingMultiAZWithNotifications.json or [link to file](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/AutoScalingMultiAZWithNotifications.template) and to [designer](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15b9)
 
 Time to finish: 20min
 
@@ -1214,6 +1498,8 @@ How CodePipeline, CodeDeploy and other CI/CD services can work together
 
 ---
 
+1. Create roles
+
 1. Create role CDInstanceRole in IAM (AmazonEC2RoleforAWSCodeDeploy)
 1. Create role CDServiceRole (AWSCodeDeployRole)
 
@@ -1260,7 +1546,9 @@ Policy for AWSCodeDeployRole in JSON (for CLI)
 
 ---
 
-## code/install-codedeploy-agent.sh
+## User Data for CodeDeploy agent
+
+code/install-codedeploy-agent.sh:
 
 ```sh
 #!/bin/bash
@@ -1286,6 +1574,12 @@ yum -y install codedeploy-agent.noarch.rpm
 
 * From S3 (using CLI)
 * From GitHub (AWS CodePipeline)
+
+---
+
+# Test
+
+See the code change after editing on GitHub
 
 ---
 
@@ -1320,23 +1614,6 @@ yum -y install codedeploy-agent.noarch.rpm
 
 ---
 
-# ❓ Questions? ❓
-
----
-
-# Lab 3: Never deploy (manually) again!
-
-Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
-
-Time to finish: 20 min
-
----
-
-# ❓ Questions? ❓
-
----
-
-
 # OpsWork vs CloudFormation vs Elastic Beanstalk
 
 OpsWork: configuration management (stacks and layers) - narrower app-oriented resources than CloudFormation
@@ -1347,174 +1624,278 @@ Elastic Beanstalk: only app management service
 
 ---
 
-# Lab
-
-Goal: Use CloudFormation to create [Autoscaling and load-balancing website in an Amazon VPC](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/VPC_AutoScaling_and_ElasticLoadBalancer.template)
+# ❓ Questions? ❓
 
 ---
 
+# Lab 4: Never deploy (manually) again!
 
+Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
 
-# How to access and work with AWS platform from within your application?
-
----
-
-# SDKs!
+Time to finish: 20 min
 
 ---
 
-Supported
-
-* Amazon S3
-* Amazon EC2
-* DynamoDB
-* Many more!
-
----
-
-# Node SDK
-
-```
-mkdir aws-node-sdk-test
-cd aws-node-sdk-test
-npm init -y
-npm i -SE aws-sdk
-```
-
----
-
-# Credentials
-
-* Home directory
-* Environment variables
-* JavaScript/Node or JSON file
-
----
-
-# Credentials in Home Directory
-
- `~/.aws/credentials` or `C:\Users\USER_NAME\.aws\credentials` for Windows users
-
-```
-[default]
-aws_access_key_id = YOUR_ACCESS_KEY_ID
-aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
-```
-
----
-
-## EC2 Example
-
-![inline](images/code-samples-ec2.png)
-
----
-
-Create and open `create-ec2.js`:
-
-```js
-// Load the SDK for JavaScript
-var AWS = require('aws-sdk');
-
-// Load credentials and set region from JSON file
-AWS.config.loadFromPath('./config.json');
-```
-
----
-
-```js
-// Load the AWS SDK for Node.js
-var AWS = require('aws-sdk');
-// Load credentials and set region from JSON file
-AWS.config.loadFromPath('./config.json');
-
-// Create EC2 service object
-var ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
-
-var params = {
-   ImageId: 'ami-10fd7020', // amzn-ami-2011.09.1.x86_64-ebs
-   InstanceType: 't2.micro',
-   MinCount: 1,
-   MaxCount: 1
-};
-```
-
----
-
-```js
-// Create the instance
-ec2.runInstances(params, function(err, data) {
-   if (err) {
-      console.log("Could not create instance", err);
-      return;
-   }
-   var instanceId = data.Instances[0].InstanceId;
-   console.log("Created instance", instanceId);
-   // Add tags to the instance
-   params = {Resources: [instanceId], Tags: [
-      {
-         Key: 'Name',
-         Value: 'SDK Sample'
-      }
-   ]};
-   ec2.createTags(params, function(err) {
-      console.log("Tagging instance", err ? "failure" : "success");
-   });
-});
-```
-
----
-
-# Lab
-
-## Goal: Build automation with User Data and AWS CLI
-
----
-
-* Create a shell script (script A) to install and run Node.js on Amazon Linux:
-  * Install EPEL and Node (npm included) [link](https://gist.github.com/azat-co/06bb3505185c8f5aa3d2ca61f9e50098)
-  * Install pm2: `npm i pm2 -g`
-  * Download server code from [GitHub](https://gist.githubusercontent.com/azat-co/8f3eb8461c3179c9616cd45b99e1d1b8/raw/00774756f9bce388f9f0614b2bf2c8528b745434/server.js) using wget or curl ([link](http://stackoverflow.com/questions/14300794/how-do-i-download-a-file-from-the-internet-to-my-linux-server-with-bash)
-  * Start server with `sudo pm2 start app.js -i 0`
-* Use script A in User Data for `run-instances`
-* Create a shell script (B) to create a 2 new instance `run-instances` from Amazon Linux in region `us-west-2` with script A on start.
-
----
-
-# Lab 1 Cont.
-
-1. Test by going to the browser
-1. Create autoscaling group: CPU>10% +1 (aws cli)
-1. Install loadtest: `npm i -g loadtest`
-1. Use loadtest to stress test your instance to see if autoscaling kicks in.
-1. Terminate the instance(s) with aws cli
+# ❓ Questions? ❓
 
 
 ---
 
-# Lab 2
+# Module 5: AWS Databases
+
+---
+
+# RDS
+
+* Aurora
+* PostgeSQL
+* MySQL
+* MariaDB
+* Oracle
+* MS SQL Server
+
+---
+
+# DynamoDB
+
+---
+
+# ElastiCache
+
+---
+
+# Redshift
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# Module 6: PaaS
+
+---
+
+# Working with ElasticBeanstalk
+
+---
+
+# ElasticBeanstalk Benefits
+
+* Easy and simple to get started
+* Increased developer productivity
+* Automatic scaling
+* Allows for a complete resource control
+* No additional charge for AWS Elastic Beanstalk
+
+---
+
+# App Environments
+
+* Python
+* Ruby
+* PHP
+* Node.js
+* Docker
+* Ruby
+* Java
+* .NET
+* Docker
+* Go
+
+---
+
+# Ways to work with ElasticBeanstalk
+
+* GitHub
+* zip
+* Docker
+* AWS CLI (EB CLI is deprecated)
+* IDEs
+* WAR files
+
+---
+
+
+# ElasticBeanstalk Resources
 
 Use Elastic Beanstalk to deploy a web app which uses RDS:
 
-<http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs.html>
+* <http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs.html>
+* [Getting Started with ElasticBeanstalk](https://aws.amazon.com/elasticbeanstalk/getting-started/)
+* [Developer Resources](https://aws.amazon.com/elasticbeanstalk/developer-resources/)
 
 ---
 
-# Lab 3
+# Demo 💻 : Launching a Node app
 
-Set up CloudFormation for the stack:
-
-* ELB
-* 2 EC2 with a web app which uses DynamoDB
-* Security Group
-* VPC
-* DynamoDB
-* SNS
+[link](https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-1#/newApplication?applicationName=EBNodeSampleApp&solutionStackName=Node.js&tierName=WebServer)
 
 ---
 
-# Resources for Lab 3:
+# Working with Docker
 
-* <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/CHAP_TemplateQuickRef.html>
+---
 
-* <http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.NodeJs.html>
-* <http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-examples.html>
+
+# Benefits of Docker (Containers)
+
+* Ship More Software Faster
+* Improve Developer Productivity
+* Seamlessly Move Applications
+* Standardize Application Operations
+
+^Docker users on average ship software 7X more frequently than non-Docker users. Docker enables developers to ship isolated services as often as needed by eliminating the headaches of software dependencies. Docker reduces the time spent setting up new environments or troubleshooting differences between environments. Dockerized applications can be seamlessly moved from local development machines to production deployments on AWS. Small containerized applications make it easy to deploy, identify issues, and roll back for remediation.
+
+---
+
+# Some of the ways to work with Dockers on AWS
+
+* EC2 (Docker image)
+* ECS
+* ECR
+* Elastic Beanstalk Containers
+* Docker EE for AWS
+
+---
+
+# Docker EE for AWS
+
+![inline](images/docker-ee.png)
+
+---
+
+# Docker EE for AWS
+
+https://www.docker.com/enterprise-edition
+
+https://aws.amazon.com/marketplace/pp/B06XCFDF9K
+
+---
+
+![inline](images/amazon-linux-docker-ami.png)
+
+---
+
+# AWS ECS
+
+---
+
+![fit](images/overview.png)
+
+---
+
+# Work Flow
+
+1. Create registry
+1. Build and push image
+1. Create task
+1. Configure service
+1. Set up ELB (optional)
+1. Configure cluster
+1. Launch
+
+^Task is a blueprint for an application (what images, how many etc.); service runs and maintains (auto-recovery) tasks in a cluster; cluster is EC2 container insances (instances with container agent)
+
+---
+
+Create registry
+
+![inline](images/deploy-docker-container-1.png)
+
+---
+
+# AWS CLI and Docker images build+push to ECR (my-repo)
+
+```
+aws ecr get-login --region us-west-1
+docker build -t my-repo .
+docker tag my-repo:latest 161599702702.dkr.ecr.us-west-1.amazonaws.com/my-repo:latest
+docker push 161599702702.dkr.ecr.us-west-1.amazonaws.com/my-repo:latest
+```
+
+---
+
+Create task
+
+![inline](images/deploy-docker-container-2.png)
+
+---
+
+Configure service
+
+![inline](images/deploy-docker-container-3.png)
+
+---
+
+Configure cluster
+
+![inline](images/deploy-docker-container-5a.png)
+
+---
+
+# Guides
+
+* [Deploy Docker Containers](https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers)
+* [Getting Started with Amazon ECR](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html)
+
+
+---
+
+
+
+# ❓ Questions? ❓
+
+---
+
+# Module 7: Serverless
+
+---
+
+# Serverless with AWS Lambda
+
+---
+
+# Demo: Building Microservice with Lambda and API Gateway
+
+---
+
+# Resources
+
+* <http://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html>
+* <https://github.com/dwyl/learn-aws-lambda#hello-world-example-inline>
+
+---
+
+# Lambda and DynamoDB
+
+GET https://h8uwddrasb.execute-api.us-west-1.amazonaws.com/prod/my-first-fn?TableName=my-first-table
+
+POST https://h8uwddrasb.execute-api.us-west-1.amazonaws.com/prod/my-first-fn?TableName=my-first-table
+
+```
+{"TableName": "my-first-table",
+
+"Item": {
+"main-part":"1",
+	"username":"CJA402",
+	"password": "cldjmPr!01"
+}}
+```
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# Lab 5: Create a microservice to save data in DB
+
+
+---
+
+# ❓ Questions? ❓
+
+---
+
+# End of Modules 👏
